@@ -254,6 +254,20 @@ services:
         condition: service_started
     networks:
       - calculator-network
+  
+    # === FRONTEND (React/Vite) ===
+  frontend:
+    build:
+      context: ./calculator-frontend
+      dockerfile: Dockerfile
+    ports:
+      - "3000:3000"
+    depends_on:
+      - api
+    networks:
+      - calculator-network
+    environment:
+      - NODE_ENV=production
 
 volumes:
   postgres_data:
