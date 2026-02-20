@@ -9,8 +9,6 @@ const (
 	UserRole  Role = "user"
 )
 
-// для бизнес логики
-
 type Task struct {
 	Num1      string `json:"num1"`
 	Num2      string `json:"num2"`
@@ -21,18 +19,16 @@ type Task struct {
 	IsFinal   bool   `json:"is_final"`
 }
 
-// для бд
-
 type Example struct {
-	ID         string      `json:"id" db:"id"`
-	Expression string      `json:"expression" db:"expression"`
-	Response   string      `json:"response" db:"response"`
-	Calculated bool        `json:"calculated" db:"calculated"`
-	Result     *float64    `json:"result,omitempty" db:"result"`
-	Error      *string     `json:"error,omitempty" db:"error"`
-	UserID     string      `json:"user_id" db:"user_id"`
-	SimpleExamples []*Task  `json:"simple_examples"` // для логики
-	CreatedAt    time.Time `json:"created_at" db:"created_at"`
+	ID             string    `json:"id" db:"id"`
+	Expression     string    `json:"expression" db:"expression"`
+	Response       string    `json:"response" db:"response"`
+	Calculated     bool      `json:"calculated" db:"calculated"`
+	Result         *float64  `json:"result,omitempty" db:"result"`
+	Error          *string   `json:"error,omitempty" db:"error"`
+	UserID         string    `json:"user_id" db:"user_id"`
+	SimpleExamples []*Task   `json:"simple_examples"` // for logic
+	CreatedAt      time.Time `json:"created_at" db:"created_at"`
 }
 
 type Step struct {
@@ -55,15 +51,13 @@ type User struct {
 	UpdatedAt    time.Time `json:"updated_at" db:"updated_at"`
 }
 
-// для регистрации и авторизации пользователя
-
 type UserCredentials struct {
-    Email    string `json:"email"`
-    Password string `json:"password"`
+	Email    string `json:"email"`
+	Password string `json:"password"`
 }
 
 type LoginResponse struct {
-    UserID string `json:"user_id"`
-    Email  string `json:"email"`
-    Token  string `json:"token"`
+	UserID string `json:"user_id"`
+	Email  string `json:"email"`
+	Token  string `json:"token"`
 }

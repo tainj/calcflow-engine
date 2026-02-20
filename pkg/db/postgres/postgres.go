@@ -3,9 +3,10 @@ package postgres
 import (
 	"context"
 	"fmt"
+	"log"
+
 	"github.com/jmoiron/sqlx"
 	_ "github.com/lib/pq"
-	"log"
 )
 
 type Config struct {

@@ -9,7 +9,7 @@ import (
 )
 
 type RedisResultRepository struct {
-	cache *cache.CACHE
+	cache  *cache.CACHE
 	logger logger.Logger
 }
 
@@ -18,11 +18,11 @@ func NewRedisResultRepository(cache *cache.CACHE, logger logger.Logger) *RedisRe
 }
 
 func (r *RedisResultRepository) SetResult(ctx context.Context, variable string, result float64) error {
-    err := r.cache.SetByKey(ctx, fmt.Sprintf("result:%s", variable), result)
+	err := r.cache.SetByKey(ctx, fmt.Sprintf("result:%s", variable), result)
 	if err != nil {
 		return fmt.Errorf("repository.SetResult: %w", err)
 	}
-	
+
 	r.logger.Debug(ctx, "set result", "variable", variable, "result", result)
 	return nil
 }

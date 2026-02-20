@@ -8,6 +8,7 @@ package api
 
 import (
 	context "context"
+
 	grpc "google.golang.org/grpc"
 	codes "google.golang.org/grpc/codes"
 	status "google.golang.org/grpc/status"
@@ -30,17 +31,17 @@ const (
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://pkg.go.dev/google.golang.org/grpc/?tab=doc#ClientConn.NewStream.
 //
-// ================== ОСНОВНОЙ СЕРВИС ==================
+// ================== MAIN SERVICE ==================
 type CalculatorClient interface {
-	// Вычислить выражение
+	// Calculate expression
 	Calculate(ctx context.Context, in *CalculateRequest, opts ...grpc.CallOption) (*CalculateResponse, error)
-	// Получить результат — через ТЕЛО
+	// Get result - via BODY
 	GetResult(ctx context.Context, in *GetResultRequest, opts ...grpc.CallOption) (*GetResultResponse, error)
-	// Получить все примеры — через тело
+	// Get all examples - via body
 	GetAllExamples(ctx context.Context, in *GetAllExamplesRequest, opts ...grpc.CallOption) (*GetAllExamplesResponse, error)
-	// Регистрация — через тело
+	// Register - via body
 	Register(ctx context.Context, in *RegisterRequest, opts ...grpc.CallOption) (*RegisterResponse, error)
-	// Логин — через тело
+	// Login - via body
 	Login(ctx context.Context, in *LoginRequest, opts ...grpc.CallOption) (*LoginResponse, error)
 }
 
@@ -106,17 +107,17 @@ func (c *calculatorClient) Login(ctx context.Context, in *LoginRequest, opts ...
 // All implementations must embed UnimplementedCalculatorServer
 // for forward compatibility.
 //
-// ================== ОСНОВНОЙ СЕРВИС ==================
+// ================== MAIN SERVICE ==================
 type CalculatorServer interface {
-	// Вычислить выражение
+	// Calculate expression
 	Calculate(context.Context, *CalculateRequest) (*CalculateResponse, error)
-	// Получить результат — через ТЕЛО
+	// Get result - via BODY
 	GetResult(context.Context, *GetResultRequest) (*GetResultResponse, error)
-	// Получить все примеры — через тело
+	// Get all examples - via body
 	GetAllExamples(context.Context, *GetAllExamplesRequest) (*GetAllExamplesResponse, error)
-	// Регистрация — через тело
+	// Register - via body
 	Register(context.Context, *RegisterRequest) (*RegisterResponse, error)
-	// Логин — через тело
+	// Login - via body
 	Login(context.Context, *LoginRequest) (*LoginResponse, error)
 	mustEmbedUnimplementedCalculatorServer()
 }

@@ -3,6 +3,7 @@ package handlers
 import (
 	"context"
 	"log/slog"
+
 	"github.com/tainj/distributed_calculator2/pkg/logger"
 	"google.golang.org/grpc"
 )

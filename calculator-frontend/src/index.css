@@ -1,5 +1,3 @@
-/* src/index.css — Тёмная тема для CalcPro */
-
 * {
   margin: 0;
   padding: 0;
@@ -81,7 +79,7 @@ button:disabled {
   margin-bottom: 30px;
 }
 
-/* Сброс возможного белого фона от других компонентов */
+
 #root, .App {
   min-height: 100vh;
   background-color: #0f0f14;

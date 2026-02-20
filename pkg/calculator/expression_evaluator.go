@@ -11,11 +11,10 @@ var (
 	ErrCovertExample        = errors.New("line is not a mathematical expression or contains an error")
 )
 
-
 type Node struct {
-	Num1     float64
-	Num2     float64
-	Sign     string
+	Num1 float64
+	Num2 float64
+	Sign string
 }
 
 // type Node struct {
@@ -30,17 +29,21 @@ func NewNode(num1, num2 float64, sign string) *Node {
 }
 
 func (n *Node) Calculate() (float64, error) {
-    switch n.Sign {
-    case "+": return n.Num1 + n.Num2, nil
-    case "-": return n.Num1 - n.Num2, nil
-    case "*": return n.Num1 * n.Num2, nil
-    case "/":
-        if n.Num2 == 0 {
-            return 0, ErrDivisionByZero
-        }
-        return n.Num1 / n.Num2, nil
-    case "^": return math.Pow(n.Num1, n.Num2), nil
-    default:
-        return 0, ErrNonExistingOperation
-    }
+	switch n.Sign {
+	case "+":
+		return n.Num1 + n.Num2, nil
+	case "-":
+		return n.Num1 - n.Num2, nil
+	case "*":
+		return n.Num1 * n.Num2, nil
+	case "/":
+		if n.Num2 == 0 {
+			return 0, ErrDivisionByZero
+		}
+		return n.Num1 / n.Num2, nil
+	case "^":
+		return math.Pow(n.Num1, n.Num2), nil
+	default:
+		return 0, ErrNonExistingOperation
+	}
 }

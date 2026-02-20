@@ -7,11 +7,12 @@
 package api
 
 import (
+	reflect "reflect"
+	sync "sync"
+
 	_ "google.golang.org/genproto/googleapis/api/annotations"
 	protoreflect "google.golang.org/protobuf/reflect/protoreflect"
 	protoimpl "google.golang.org/protobuf/runtime/protoimpl"
-	reflect "reflect"
-	sync "sync"
 )
 
 const (
@@ -326,7 +327,7 @@ type Example struct {
 	Calculated bool     `protobuf:"varint,3,opt,name=calculated,proto3" json:"calculated,omitempty"`
 	Result     *float64 `protobuf:"fixed64,4,opt,name=result,proto3,oneof" json:"result,omitempty"`
 	CreatedAt  string   `protobuf:"bytes,5,opt,name=created_at,json=createdAt,proto3" json:"created_at,omitempty"`
-	Error      *string  `protobuf:"bytes,6,opt,name=error,proto3,oneof" json:"error,omitempty"` // ← Новое поле!
+	Error      *string  `protobuf:"bytes,6,opt,name=error,proto3,oneof" json:"error,omitempty"` // ← New field!
 }
 
 func (x *Example) Reset() {

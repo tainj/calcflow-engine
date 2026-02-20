@@ -1,5 +1,5 @@
 -- ===================================
--- Создаём функцию для auto-updated_at
+-- Create function for auto-updated_at
 -- ===================================
 CREATE OR REPLACE FUNCTION update_updated_at_column()
 RETURNS TRIGGER AS $$
@@ -10,7 +10,7 @@ END;
 $$ language 'plpgsql';
 
 -- ===================================
--- Таблица: users
+-- Table: users
 -- ===================================
 CREATE TABLE users (
     id VARCHAR(64) PRIMARY KEY,
@@ -26,15 +26,15 @@ CREATE INDEX idx_users_email ON users(email);
 CREATE INDEX idx_users_username ON users(username);
 
 -- ===================================
--- Таблица: examples
+-- Table: examples
 -- ===================================
 CREATE TABLE examples (
     id VARCHAR(64) PRIMARY KEY,
     expression TEXT NOT NULL,
-    response VARCHAR(64) NOT NULL, -- variable финального результата
+    response VARCHAR(64) NOT NULL, -- final result variable
     calculated BOOLEAN NOT NULL DEFAULT FALSE,
     result DOUBLE PRECISION,
-    error TEXT, -- например, "division by zero"
+    error TEXT, -- e.g., "division by zero"
     user_id VARCHAR(64) NOT NULL REFERENCES users(id) ON DELETE CASCADE,
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
     updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
@@ -44,7 +44,7 @@ CREATE INDEX idx_examples_user_id ON examples(user_id);
 CREATE INDEX idx_examples_calculated ON examples(calculated);
 
 -- ===================================
--- Таблица: tasks (промежуточные шаги для отчёта)
+-- Table: tasks (intermediate steps for report)
 -- ===================================
 CREATE TABLE tasks (
     id VARCHAR(64) PRIMARY KEY,
@@ -62,7 +62,7 @@ CREATE INDEX idx_tasks_example_id ON tasks(example_id);
 CREATE INDEX idx_tasks_variable ON tasks(variable);
 
 -- ===================================
--- Триггеры для auto-updated_at
+-- Triggers for auto-updated_at
 -- ===================================
 CREATE TRIGGER update_examples_updated_at
     BEFORE UPDATE ON examples
