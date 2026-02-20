@@ -45,8 +45,8 @@ func NewKafkaQueue(cfg Config, l logger.Logger) (*KafkaQueue, error) {
 			GroupID:        "calculator_group",
 			MinBytes:       1,
 			MaxBytes:       1e6,
-			CommitInterval: 0,               // коммитим вручную
-		},),
+			CommitInterval: 0, // commit manually
+		}),
 		logger: l,
 	}, nil
 }
@@ -69,7 +69,7 @@ func (k *KafkaQueue) SendTask(task interface{}) error {
 	return nil
 }
 
-// ReadTask возвращает данные сообщения и само сообщение для commit
+// ReadTask returns message data and message itself for commit
 func (k *KafkaQueue) ReadTask() ([]byte, kafka.Message, error) {
 	k.logger.Debug(context.Background(), "read task from Kafka")
 	message, err := k.reader.ReadMessage(context.Background())
@@ -82,7 +82,7 @@ func (k *KafkaQueue) ReadTask() ([]byte, kafka.Message, error) {
 	return message.Value, message, nil
 }
 
-// Commit подтверждает обработку сообщения
+// Commit confirms message processing
 func (k *KafkaQueue) Commit(message kafka.Message) error {
 	k.logger.Debug(context.Background(), "committing message", "offset", message.Offset)
 

@@ -6,9 +6,9 @@ option go_package = "github.com/tainj/distributed_calculator2/pkg/api";
 
 import "google/api/annotations.proto";
 
-// ================== ОСНОВНОЙ СЕРВИС ==================
+// ================== MAIN SERVICE ==================
 service Calculator {
-  // Вычислить выражение
+  // Calculate expression
   rpc Calculate(CalculateRequest) returns (CalculateResponse) {
     option (google.api.http) = {
       post: "/v1/calculate"
@@ -16,7 +16,7 @@ service Calculator {
     };
   }
 
-  // Получить результат — через ТЕЛО
+  // Get result - via BODY
   rpc GetResult(GetResultRequest) returns (GetResultResponse) {
     option (google.api.http) = {
       post: "/v1/result"
@@ -24,7 +24,7 @@ service Calculator {
     };
   }
 
-  // Получить все примеры — через тело
+  // Get all examples - via body
   rpc GetAllExamples(GetAllExamplesRequest) returns (GetAllExamplesResponse) {
     option (google.api.http) = {
       post: "/v1/examples"
@@ -32,7 +32,7 @@ service Calculator {
     };
   }
 
-  // Регистрация — через тело
+  // Register - via body
   rpc Register(RegisterRequest) returns (RegisterResponse) {
     option (google.api.http) = {
       post: "/v1/register"
@@ -40,7 +40,7 @@ service Calculator {
     };
   }
 
-  // Логин — через тело
+  // Login - via body
   rpc Login(LoginRequest) returns (LoginResponse) {
     option (google.api.http) = {
       post: "/v1/login"
@@ -49,7 +49,7 @@ service Calculator {
   }
 }
 
-// ================== МОДЕЛИ ==================
+// ================== MODELS ==================
 
 message CalculateRequest {
   string expression = 1;
@@ -82,7 +82,7 @@ message Example {
   bool calculated = 3;
   optional double result = 4;
   string created_at = 5;
-  optional string error = 6; // ← Новое поле!
+  optional string error = 6; // ← New field!
 }
 
 message RegisterRequest {

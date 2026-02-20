@@ -1,6 +1,6 @@
 # 🧮 Distributed Calculator
 A distributed calculator with support for complex expressions, asynchronous processing, and computation history.
-It can calculate even ~(~2) + 3 and remembers that 2 + 2 * 2 = 8.
+It can calculate even ~(~2) + 3 and remembers that 2 + 2 * 2 = 6.
 
 ## ⚙️ Environment Requirements
 Before running the project, make sure you have installed:
