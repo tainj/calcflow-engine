@@ -1,13 +1,13 @@
-# === Stage 1: Сборка фронтенда ===
+# === Stage 1: Frontend Build ===
 FROM node:18-alpine AS builder
 
 WORKDIR /app
 COPY package*.json ./
-RUN npm ci --only=production
+RUN npm ci
 COPY . .
 RUN npm run build
 
-# === Stage 2: Сервинг через Nginx ===
+# === Stage 2: Serving via Nginx ===
 FROM nginx:alpine
 COPY --from=builder /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf

@@ -1,57 +1,57 @@
 # 🧮 Distributed Calculator
-Распределённый калькулятор с поддержкой сложных выражений, асинхронной обработки и истории вычислений.
-Считает даже ~(~2) + 3 и помнит, что 1000 - 7 = 993.
+A distributed calculator with support for complex expressions, asynchronous processing, and computation history.
+It can calculate even ~(~2) + 3 and remembers that 2 + 2 * 2 = 8.
 
-## ⚙️ Требования к окружению
-Перед запуском проекта убедитесь, что у вас установлено:
+## ⚙️ Environment Requirements
+Before running the project, make sure you have installed:
 
-`Docker` и `Docker Compose` (для запуска)
-## 🚀 Запуск проекта
-### 1. Подготовка окружения
+`Docker` and `Docker Compose` (for running)
+## 🚀 Running the Project
+### 1. Environment Setup
 ```bash
-# Создайте .env файл на основе примера
+# Create .env file based on the example
 cp .env.example .env
 ```
-### 2. Запуск
+### 2. Running the Application
 ```bash
-# Собираем образ
-docker-compose build --no-cache
+# Build the image
+docker compose build --no-cache
 
-# Запускаем стек
-docker-compose up
+# Run the stack
+docker compose up
 ```
-## 🔨 Технологический стек
-| Компонент | Технология |
+## 🔨 Technology Stack
+| Component | Technology |
 | :---:  | :---:     |
-| Сообщения | `Kafka` (3-нодовый кластер)|
-| Кэш | `Redis` |
-| БД | `PostgreSQL` |
+| Messaging | `Kafka` (3-node cluster)|
+| Cache | `Redis` |
+| Database | `PostgreSQL` |
 | API | `gRPC` + `HTTP/JSON` |
-| Авторизация | `JWT` |
-| Фронтенд | `React` + `Vite` + `Tailwind CSS` |
-| Сборка | `Docker Compose` |
+| Authorization | `JWT` |
+| Frontend | `React` + `Vite` + `Tailwind CSS` |
+| Build | `Docker Compose` |
 
-## 🧠 Как это работает
-1. Пользователь вводит выражение в веб-интерфейсе
-2. Фронт отправляет запрос на `Gateway`
-3. Gateway проверяет `JWT` и парсит выражение
-4. Задача разбивается на шаги и отправляется в `Kafka`
-5. Воркеры обрабатывают шаги, сохраняя промежуточные результаты в `Redis`
-6. Финальный результат сохраняется в `PostgreSQL`
-7. Пользователь получает результат или ошибку
+## 🧠 How It Works
+1. User enters an expression in the web interface
+2. Frontend sends a request to the `Gateway`
+3. Gateway validates `JWT` and parses the expression
+4. The task is broken down into steps and sent to `Kafka`
+5. Workers process the steps, storing intermediate results in `Redis`
+6. The final result is saved to `PostgreSQL`
+7. User receives the result or an error message
 
 ## 📡 API Endpoints
-| Метод | URL | Описание |
+| Method | URL | Description |
 | :---: | :---: | :---: |
-| `POST` | `/v1/calculate` | Запускает вычисление выражения |
-| `POST` | `/v1/result`    | Возвращает результат по `task_id` |
-| `POST` | `/v1/examples` | Возвращает историю вычислений пользователя |
-| `POST` | `/v1/register` | Регистрация пользователя | 
-| `POST` | `/v1/login`    | Авторизация и получение JWT |
+| `POST` | `/v1/calculate` | Start calculating an expression |
+| `POST` | `/v1/result`    | Returns result by `task_id` |
+| `POST` | `/v1/examples` | Returns computation history of the user |
+| `POST` | `/v1/register` | User registration | 
+| `POST` | `/v1/login`    | Authorization and JWT retrieval |
 
-### 💡 Примеры использования
-✅ Пример: Регистрация пользователя </br>
-Запрос
+### 💡 Usage Examples
+✅ Example: User Registration </br>
+Request
 ```bash
 curl --location 'http://localhost:8080/v1/register' \
 --header 'Content-Type: application/json' \
@@ -60,15 +60,15 @@ curl --location 'http://localhost:8080/v1/register' \
   "password": "mysecretpassword123"
 }'
 ```
-Ответ
+Response
 ```json
 {
   "success": true,
   "error": ""
 }
 ```
-✅ Пример: Вход в систему </br>
-Запрос
+✅ Example: User Login </br>
+Request
 ```bash
 curl --location 'http://localhost:8080/v1/login' \
 --header 'Content-Type: application/json' \
@@ -77,7 +77,7 @@ curl --location 'http://localhost:8080/v1/login' \
   "password": "mysecretpassword123"
 }'
 ```
-Ответ
+Response
 ```json
 {
     "success": true,
@@ -87,8 +87,8 @@ curl --location 'http://localhost:8080/v1/login' \
 }
 
 ```
-✅ Пример: Вычисление выражения <br>
-Запрос 
+✅ Example: Calculate an Expression <br>
+Request 
 ```bash
 curl --location 'http://localhost:8080/v1/calculate' \
 --header 'Content-Type: application/json' \
@@ -97,15 +97,15 @@ curl --location 'http://localhost:8080/v1/calculate' \
     "expression": "1000-7"
 }'
 ```
-Ответ
+Response
 ```json
 {
     "taskId": "c352230c-802e-4158-b528-5b2365481179"
 }
 
 ```
-✅ Пример: Получение результата </br>
-Запрос 
+✅ Example: Get Result </br>
+Request 
 ```bash
 curl --location 'http://localhost:8080/v1/result' \
 --header 'Content-Type: application/json' \
@@ -115,19 +115,19 @@ curl --location 'http://localhost:8080/v1/result' \
 }'
 
 ```
-Ответ
+Response
 ```json
 {
     "value": 993
 }
 ```
-✅ Пример: История вычислений </br>
-Запрос
+✅ Example: Computation History </br>
+Request
 ```bash
 curl --location --request POST 'http://localhost:8080/v1/examples' \
 --header 'Authorization: ••••••'
 ```
-Ответ
+Response
 ```json
 {
     "examples": [
@@ -169,115 +169,115 @@ curl --location --request POST 'http://localhost:8080/v1/examples' \
     ]
 }
 ```
-## 🗂️ Структура проекта
+## 🗂️ Project Structure
 ```
 distributed_calculator2/
 ├── cmd/
-│   ├── main/        # Основной сервер (gRPC + REST)
-│   └── worker/      # Воркер для обработки задач
+│   ├── main/        # Main server (gRPC + REST)
+│   └── worker/      # Worker for task processing
 ├── internal/
-│   ├── auth/        # JWT авторизация
-│   ├── models/      # Модели данных
-│   ├── repository/  # Репозитории (Postgres, Redis)
-│   ├── service/     # Бизнес-логика
-│   └── worker/      # Логика воркера
+│   ├── auth/        # JWT authorization
+│   ├── models/      # Data models
+│   ├── repository/  # Repositories (Postgres, Redis)
+│   ├── service/     # Business logic
+│   └── worker/      # Worker logic
 ├── pkg/
-│   ├── api/         # gRPC прото
-│   ├── config/      # Конфигурация
-│   ├── db/          # Подключение к БД
-│   ├── logger/      # Логирование
+│   ├── api/         # gRPC proto
+│   ├── config/      # Configuration
+│   ├── db/          # Database connections
+│   ├── logger/      # Logging
 │   ├── messaging/   # Kafka
-│   └── valueprovider/ # Получение значений
-├── migrations/      # Миграции БД
-├── my-calculator/   # React фронтенд
+│   └── valueprovider/ # Value retrieval
+├── migrations/      # Database migrations
+├── my-calculator/   # React frontend
 ├── docker-compose.yml
 ├── Dockerfile
 └── .env.example
 ```
-## 🗃️ Структура БД
-### Таблица examples
-| Поле | Тип | Описание |
+## 🗃️ Database Structure
+### Table examples
+| Field | Type | Description |
 | :---: | :---: | :---: |
-|`id`|`TEXT`|Уникальный `ID` выражения
-|`expression`|`TEXT`|Исходное выражение
-|`response`|`TEXT`|Финальная переменная
-|`user_id`|`TEXT`|`ID` пользователя
-|`calculated`|`BOOLEAN`|Вычисление завершено
-|`error`|`TEXT`|Ошибка (если есть)
-|`created_at`|`TIMESTAMPTZ`|Время создания
-|`updated_at`|`TIMESTAMPTZ`|Время обновления
-### Таблица users
-Поле|Тип|Описание
+|`id`|`TEXT`|Unique expression `ID`
+|`expression`|`TEXT`|Original expression
+|`response`|`TEXT`|Final variable
+|`user_id`|`TEXT`|User `ID`
+|`calculated`|`BOOLEAN`|Calculation completed
+|`error`|`TEXT`|Error (if any)
+|`created_at`|`TIMESTAMPTZ`|Creation time
+|`updated_at`|`TIMESTAMPTZ`|Update time
+### Table users
+| Field | Type | Description |
 | :---: | :---: | :---: |
-|`id`|`TEXT`|Уникальный ID пользователя
-|`email`|`TEXT`|Email пользователя
-|`password_hash`|`TEXT`|Хэш пароля
-|`role`|`TEXT`|Роль (user/admin)
-|`created_at`|`TIMESTAMPTZ`|Время регистрации
-|`updated_at`|`TIMESTAMPTZ`|Время обновления
+|`id`|`TEXT`|Unique user ID
+|`email`|`TEXT`|User email
+|`password_hash`|`TEXT`|Password hash
+|`role`|`TEXT`|Role (user/admin)
+|`created_at`|`TIMESTAMPTZ`|Registration time
+|`updated_at`|`TIMESTAMPTZ`|Update time
 
-## 🧩 Особенности реализации
-1. Унарный минус через ~
+## 🧩 Implementation Features
+1. Unary minus through ~
 ```
-// ~5 превращается в (0-5)
+// ~5 becomes (0-5)
 // ~(~2) + 3 = 5
 ```
-2. Обработка деления на ноль
+2. Division by zero handling
 ```
-5 / 0 → ошибка "division by zero"
+5 / 0 → error "division by zero"
 ```
-3. Асинхронная обработка
-* Выражение разбивается на шаги
-* Каждый шаг отправляется в `Kafka`
-* Воркеры обрабатывают шаги параллельно
-* Результат собирается из промежуточных значений
-4. Поддержка сложных выражений
+3. Asynchronous processing
+* Expression is broken down into steps
+* Each step is sent to `Kafka`
+* Workers process steps in parallel
+* Result is assembled from intermediate values
+4. Support for complex expressions
 ```
 ~(~2) + 3 * (4 - 1) ^ 2
 ```
-## 🖥️ Фронтенд
-Фронтенд на `React` с темной темой (чёрный фон, фиолетовые акценты):
+## 🖥️ Frontend
+Frontend on `React` with a dark theme (black background, purple accents):
 
-* Главная страница — описание проекта и технологии
-* Калькулятор — ввод выражений и получение результатов
-* История — просмотр предыдущих вычислений
-* Авторизация — регистрация и вход
-* Доступен на [`http://localhost:3000`](http://localhost:3000) после запуска 
+* Home page — project description and technologies
+* Calculator — input expressions and get results
+* History — view previous calculations
+* Authorization — registration and login
+* Available at [`http://localhost:3000`](http://localhost:3000) after running 
 ```bash
 npm run dev
 ```
 
-### 🛠️ Как считается выражение
-1. Пользователь вводит выражение: `~(~2) + 3`
-2. Система парсит его в обратную польскую нотацию:
+### 🛠️ How Expression Is Calculated
+1. User enters expression: `~(~2) + 3`
+2. System parses it to reverse Polish notation:
 ```
 2 ~ 2 ~ 3 + → 2 (0 - 2) (0 - 3) + 
 ```
-#### Разбивает на шаги:
-* Шаг 1: `~2 = -2`
-* Шаг 2: `~(-2) = 2`
-* Шаг 3: `2 + 3 = 5`
-* Каждый шаг отправляется в `Kafka`
-* Воркеры обрабатывают шаги и сохраняют результаты в `Redis`
-* Финальный результат сохраняется в `PostgreSQL`
-## 📊 Мониторинг воркеров
-В фронтенде есть раздел "`Workers`", где отображается:
+#### Breaks into steps:
+* Step 1: `~2 = -2`
+* Step 2: `~(-2) = 2`
+* Step 3: `2 + 3 = 5`
+* Each step is sent to `Kafka`
+* Workers process steps and store results in `Redis`
+* Final result is saved to `PostgreSQL`
+## 📊 Workers Monitoring
+The frontend has a "`Workers`" section that displays:
 
-* Состояние воркеров (онлайн/оффлайн)
-* Количество обработанных задач
-* Текущая нагрузка
-* Время последней активности
-## 🔐 Безопасность
-* Все запросы требуют `JWT`-авторизации (кроме регистрации и входа)
-* Пароли хранятся в хэшированном виде (`bcrypt`)
-* Валидация входных данных на всех этапах
-* Нет использования `eval()` — безопасный парсинг выражений
+* Worker status (online/offline)
+* Number of tasks processed
+* Current load
+* Time of last activity
+## 🔐 Security
+* All requests require `JWT` authorization (except registration and login)
+* Passwords are stored in hashed form (`bcrypt`)
+* Input validation at all stages
+* No use of `eval()` — safe expression parsing
 ## 📁 Docker Compose
-Проект использует мощный `Docker Compose` с:
+The project uses powerful `Docker Compose` with:
 
-* 3-нодовым кластером `Kafka` (`KRaft`)
-* `Redis` для кэширования
-* `PostgreSQL` для хранения истории
-* Автоматическими миграциями
-* Созданием топиков `Kafka` при старте
-* Сборка фронтенда на `React`
+* 3-node `Kafka` cluster (`KRaft`)
+* `Redis` for caching
+* `PostgreSQL` for storing history
+* Automatic migrations
+* Creating `Kafka` topics on startup
+* Building frontend on `React`

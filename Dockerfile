@@ -1,29 +1,29 @@
-# Стадия 1: сборка
+# Stage 1: Build
 FROM golang:1.23-alpine AS builder
 
 WORKDIR /app
 
-# Шаг 1: копируем ТОЛЬКО go.mod и go.sum
+# Step 1: Copy ONLY go.mod and go.sum
 COPY go.mod go.sum ./
 
-# Шаг 2: загружаем зависимости (этот слой будет закеширован, если mod/sum не менялись)
+# Step 2: Download dependencies (this layer will be cached if mod/sum haven't changed)
 RUN go mod download
 
-# Шаг 3: копируем ВЕСЬ код (уже после зависимостей)
+# Step 3: Copy ALL code (after dependencies)
 COPY . .
 
-# Шаг 4: собираем бинарники
+# Step 4: Build binaries
 RUN go build -o main cmd/main/main.go
 RUN go build -o worker cmd/worker/main.go
 
-# Стадия 2: минимальный образ
+# Stage 2: Minimal image
 FROM alpine:latest
 
-RUN apk --no-cache add ca-certificates
+RUN apk update && apk --no-cache add ca-certificates
 
 WORKDIR /root/
 
-# Копируем бинарники и .env
+# Copy binaries and .env
 COPY --from=builder /app/main ./main
 COPY --from=builder /app/worker ./worker
 COPY --from=builder /app/.env .env
@@ -32,4 +32,4 @@ RUN chmod +x ./main ./worker
 
 EXPOSE 8080 50051 8081 8082 8083
 
-# Команда будет задана в docker-compose
+# Command will be specified in docker-compose

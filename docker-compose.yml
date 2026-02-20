@@ -1,6 +1,6 @@
 # docker-compose.yml
 services:
-  # === KAFKA КЛАСТЕР (KRaft) ===
+  # === KAFKA CLUSTER (KRaft) ===
   kafka-1:
     image: confluentinc/cp-kafka:latest
     container_name: calculator-kafka-1
@@ -153,25 +153,25 @@ services:
         condition: service_healthy
     command: >
       sh -c '
-        echo "Ожидание Kafka..." &&
+        echo "Waiting for Kafka..." &&
         sleep 15 &&
         
-        # Проверяем, существует ли топик
+        # Check if topic exists
         if kafka-topics --bootstrap-server kafka-1:9092 --list | grep -q "calculator_tasks"; then
-          echo "✅ Топик calculator_tasks уже существует"
+          echo "✅ Topic calculator_tasks already exists"
         else
-          echo "Создаю топик calculator_tasks..."
+          echo "Creating topic calculator_tasks..."
           kafka-topics --bootstrap-server kafka-1:9092 --create --topic calculator_tasks --partitions 3 --replication-factor 1 &&
-          echo "✅ Топик calculator_tasks создан"
+          echo "✅ Topic calculator_tasks created"
         fi &&
         
-        echo "Список топиков:" &&
+        echo "Topic list:" &&
         kafka-topics --bootstrap-server kafka-1:9092 --list
       '
     networks:
       - calculator-network
 
-  # === API СЕРВЕР ===
+  # === API SERVER ===
   api:
     build: .
     command: ./main
@@ -194,7 +194,7 @@ services:
     networks:
       - calculator-network
 
-  # === ВОРКЕРЫ ===
+  # === WORKERS ===
   worker1:
     build: .
     command: ./worker
